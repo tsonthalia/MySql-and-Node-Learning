@@ -1,0 +1,118 @@
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <h1>Hello Everyone! This is my new Travel Website</h1>
+    <input type="text" name="" value="" id="textfield">
+    <button type="button" name="button" id="submit">Submit</button>
+
+    <div class="results">
+
+    <h2>Las Vegas</h2><h2>San Francisco</h2></div>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-firestore.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#config-web-app -->
+
+    <script>
+
+      //const firebase = require("firebase");
+      // Required for side-effects
+      //require("firebase/firestore");
+
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyDw3OQppiro23R_l7p92-jt9VrLdxvHXRk",
+        authDomain: "travelwebsite-6a51e.firebaseapp.com",
+        databaseURL: "https://travelwebsite-6a51e.firebaseio.com",
+        projectId: "travelwebsite-6a51e",
+        storageBucket: "travelwebsite-6a51e.appspot.com",
+        messagingSenderId: "744920071655",
+        appId: "1:744920071655:web:3b67b81c3443b56c"
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+
+      var db = firebase.firestore();
+
+      // db.collection("locations").get().then((querySnapshot) => {
+      //     querySnapshot.forEach((doc) => {
+      //         var array = doc.data().tags;
+      //         //console.log(array);
+      //         for (var i = 0; i < array.length; i++) {
+      //           console.log(array[i]);
+      //         }
+      //         //console.log(`${doc.id} => ${doc.data()}`);
+      //     });
+      // });
+
+      var submit = document.getElementById('submit');
+
+      submit.onclick = function() {
+        var tag = document.getElementById('textfield').value;
+        var newArray = [];
+
+        // db.collection("tags").get().then((querySnapshot) => {
+        //     querySnapshot.forEach((doc) => {
+        //         var tagMatches = doc.data().value;
+        //
+        //         if (tagMatches == tag) {
+        //           var locs = doc.data().locationsFound;
+        //           for (var i = 0; i < locs.length; i++) {
+        //             $(".results").append("<h2>" + locs[i] + "</h2>");
+        //           }
+        //         }
+        //         //console.log(array);
+        //         // for (var i = 0; i < tagMatches.length; i++) {
+        //         //   if(tagMatches[i] === tag) {
+        //         //     $(".results").append("<h2>" + doc.id + "</h2>");
+        //         //   }
+        //         // }
+        //     });
+        // });
+
+        db.collection("countries").get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                if (doc.data().value === "United States of America") {
+                  db.collection("tags").get().then((querySnapshot2) => {
+                      querySnapshot2.forEach((doc2) => {
+                        var tagMatches = doc2.data().value;
+
+                        if (tagMatches == tag) {
+                          var locs = doc2.data().locationsFound;
+                          for (var i = 0; i < locs.length; i++) {
+                            $(".results").append("<h2>" + locs[i] + "</h2>");
+                            console.log(locs[i]);
+                          }
+                        }
+                      });
+                  });
+                }
+
+                var tagMatches = doc.data().value;
+
+                if (tagMatches == tag) {
+                  var locs = doc.data().locationsFound;
+                  for (var i = 0; i < locs.length; i++) {
+                    $(".results").append("<h2>" + locs[i] + "</h2>");
+                  }
+                }
+                //console.log(array);
+                // for (var i = 0; i < tagMatches.length; i++) {
+                //   if(tagMatches[i] === tag) {
+                //     $(".results").append("<h2>" + doc.id + "</h2>");
+                //   }
+                // }
+            });
+        });
+      }
+
+    </script>
+  </body>
+</html>
